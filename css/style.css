@@ -355,7 +355,7 @@ ol {
 
 	width: 550px;
 	height: 100%;
-	background: #f3bd00;
+
 	content: "";
 	z-index: -1;
 	-webkit-clip-path: polygon(0% 0%, 100% 0%, 96% 100%, 0% 100%);
@@ -1303,6 +1303,14 @@ ol {
 	margin-top: 25px;
 }
 
+
+  
+  .secondary {
+	background: transparent;
+	color: #777;
+	border: 1px solid #777;
+  }
+  
 /*---------------------
   Room Details Slider
 -----------------------*/
