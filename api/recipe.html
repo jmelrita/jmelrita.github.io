@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Recipe Finder</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css">
+    <style>
+        body {
+            background-color: #f8f9fa;
+        }
+        .recipe-card {
+            margin: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container mt-5">
+        <h1 class="text-center">Recipe Finder</h1>
+        <div class="form-group">
+            <input type="text" id="search-input" class="form-control" placeholder="Enter meal name or ingredient">
+        </div>
+        <button id="search-button" class="btn btn-primary btn-block">Search</button>
+        <div id="recipes" class="row mt-4"></div>
+    </div>
+
+    <script>
+        document.getElementById('search-button').addEventListener('click', function() {
+            const query = document.getElementById('search-input').value;
+            fetchRecipes(query);
+        });
+
+        function fetchRecipes(query) {
+            const url = `https://www.themealdb.com/api/json/v1/1/search.php?s=${query}`;
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => displayRecipes(data.meals))
+                .catch(error => console.error('Error fetching data:', error));
+        }
+
+        function displayRecipes(recipes) {
+            const recipesContainer = document.getElementById('recipes');
+            recipesContainer.innerHTML = ''; // Clear previous results
+
+            if (recipes) {
+                recipes.forEach(recipe => {
+                    const card = document.createElement('div');
+                    card.classList.add('col-md-4', 'recipe-card');
+
+                    card.innerHTML = `
+                        <div class="card">
+                            <img src="${recipe.strMealThumb}" class="card-img-top" alt="${recipe.strMeal}">
+                            <div class="card-body">
+                                <h5 class="card-title">${recipe.strMeal}</h5>
+                                <p class="card-text">Category: ${recipe.strCategory}</p>
+                                <a href="${recipe.strSource}" target="_blank" class="btn btn-success">View Recipe</a>
+                            </div>
+                        </div>
+                    `;
+
+                    recipesContainer.appendChild(card);
+                });
+            } else {
+                recipesContainer.innerHTML = `<p class="text-danger">No recipes found!</p>`;
+            }
+        }
+    </script>
+</body>
+</html>
